@@ -24,11 +24,14 @@ From R:
 
 install.packages('devtools')
 library(devtools)
-install_github('RMonet', username='piersharding', args=c("--configure-args='--with-mapi-include=/usr/include/monetdb --with-mapi-lib=.'"))
+install_github('RMonet', username='piersharding',
+            args=c("--configure-args='--with-mapi-include=/usr/include/monetdb --with-mapi-lib=.'"))
 
-The args= value passed in must correspond to the correct location for your setup for the INCLUDE and LIB paths to the MonetDB mapi client library.
+The args= value passed in must correspond to the correct location for your setup for
+the INCLUDE and LIB paths to the MonetDB mapi client library.
 
-You must ensure that all your installed packages (especially httr, and stringr) are up to date.  The easiest way to do this is to start R and:
+You must ensure that all your installed packages (especially httr, and stringr) are
+up to date.  The easiest way to do this is to start R and:
 
 update.packages()
 
