@@ -1,4 +1,4 @@
-Package: RMonetDB
+Package: RMonet
 Version: 0.3
 Date: 2013-01-31
 Author: Piers Harding <piers@ompka.net>
@@ -9,8 +9,8 @@ SystemRequirements: MonetDB mapi client libraries http://www.monetdb.org/Documen
 Depends: R (>= 2.12.0), methods, utils, yaml
 LazyLoad: yes
 License: GPL-3
-URL: http://github.com/piersharding/RMonetDB
-BugReports: http://github.com/piersharding/RMonetDB/issues
+URL: http://github.com/piersharding/RMonet
+BugReports: http://github.com/piersharding/RMonet/issues
 BuildVignettes: no
 Repository: CRAN
 Date/Publication: 2012-02-04 12:00:00

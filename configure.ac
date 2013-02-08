@@ -1,6 +1,6 @@
 # original by Friedrich Leisch, much changed by BDR
 
-AC_INIT([RMonetDB], 0.0.2, [piers@ompka.net])
+AC_INIT([RMonet], 0.3, [piers@ompka.net])
 
 dnl Select an optional include path, from a configure option
 dnl or from an environment variable.
@@ -8,12 +8,12 @@ AC_ARG_WITH([mapi-include],
             AC_HELP_STRING([--with-mapi-include=INCLUDE_PATH],
                            [the location of MonetDB client mapi header files]),
             [mapi_include_path=$withval])
-RMonetDB_CPPFLAGS="-I."
+RMonet_CPPFLAGS="-I."
 if test [ -n "$mapi_include_path" ] ; then
-   RMonetDB_CPPFLAGS="-I. -I${mapi_include_path}"
+   RMonet_CPPFLAGS="-I. -I${mapi_include_path}"
 else
   if test [ -n "${MAPI_INCLUDE}" ] ; then
-     RMonetDB_CPPFLAGS="-I. -I${MAPI_INCLUDE}"
+     RMonet_CPPFLAGS="-I. -I${MAPI_INCLUDE}"
   fi
 fi
 
@@ -40,14 +40,14 @@ fi
 CC=`"${R_HOME}/bin/R" CMD config CC`
 CPP=`"${R_HOME}/bin/R" CMD config CPP`
 CFLAGS=`"${R_HOME}/bin/R" CMD config CFLAGS`
-RMONETDB_EXT_CPPFLAGS=`"${R_HOME}/bin/R" CMD config --cppflags`
+RMONET_EXT_CPPFLAGS=`"${R_HOME}/bin/R" CMD config --cppflags`
 CPPFLAGS=`"${R_HOME}/bin/R" CMD config CPPFLAGS`
 EXTCPPFLAGS=`"${R_HOME}/bin/R" CMD config --cppflags`
 
 PKG_LIBS=`pkg-config monetdb-mapi --libs`
 PKG_CPPFLAGS=`pkg-config monetdb-mapi --cflags`
 
-CPPFLAGS="${CPPFLAGS} ${CFLAGS}  ${EXTCPPFLAGS} ${PKG_CPPFLAGS} ${RMONETDB_CPPFLAGS}"
+CPPFLAGS="${CPPFLAGS} ${CFLAGS}  ${EXTCPPFLAGS} ${PKG_CPPFLAGS} ${RMONET_CPPFLAGS}"
 PKG_CPPFLAGS="${PKG_CPPFLAGS} ${EXTCPPFLAGS} "
 
 echo "All base CPP flags are: ${CPPFLAGS} "
@@ -76,11 +76,11 @@ AC_TRY_LINK(
 dnl for unixODBC header
 AC_CHECK_SIZEOF(long, 4)
 
-RMONETDB_CPPFLAGS="${RMONETDB_CPPFLAGS} ${RMONETDB_EXT_CPPFLAGS} "
-echo "Final RMonetDB flags are: ${RMONETDB_CPPFLAGS}"
+RMONET_CPPFLAGS="${RMONET_CPPFLAGS} ${RMONET_EXT_CPPFLAGS} "
+echo "Final RMonet flags are: ${RMONET_CPPFLAGS}"
 
-dnl substitute RMonetDB_CPPFLAGS and LIBS
-AC_SUBST(RMONETDB_CPPFLAGS)
+dnl substitute RMonet_CPPFLAGS and LIBS
+AC_SUBST(RMONET_CPPFLAGS)
 AC_SUBST(PKG_CPPFLAGS)
 AC_SUBST(CPPFLAGS)
 AC_SUBST(PKG_LIBS)

@@ -1,12 +1,12 @@
-\name{RMonetDBQuery}
-\alias{RMonetDBQuery}
+\name{RMonetQuery}
+\alias{RMonetQuery}
 \alias{dbquery}
 \title{Query MonetDB using SQL}
 \description{
   Run arbitrary SQL queries against the MonetDB and return the results as a data.frame
 }
 \usage{
-RMonetDBQuery(con, sql, parameters=list(), autocommit=FALSE, lastid=FALSE, page=FALSE)
+RMonetQuery(con, sql, parameters=list(), autocommit=FALSE, lastid=FALSE, page=FALSE)
 }%"
 \arguments{
   \item{con}{an Open MonetDB Connection handle}
@@ -18,11 +18,11 @@ RMonetDBQuery(con, sql, parameters=list(), autocommit=FALSE, lastid=FALSE, page=
 }
 \details{
   \preformatted{
-  con <- RMonetDBConnect("db.yml")
-  res <- RMonetDBQuery(con,  "SELECT * FROM voc.craftsmen WHERE trip > ? LIMIT ?", list(3,15))
+  con <- RMonetConnect("db.yml")
+  res <- RMonetQuery(con,  "SELECT * FROM voc.craftsmen WHERE trip > ? LIMIT ?", list(3,15))
   print(res)
 
-  RMonetDBClose(con)
+  RMonetClose(con)
   }
 
 }
@@ -36,14 +36,14 @@ RMonetDBQuery(con, sql, parameters=list(), autocommit=FALSE, lastid=FALSE, page=
 }
 \examples{\dontrun{
 # read the VOC craftsmen table with parameter substitutions
-RMonetDBQuery(con,  "SELECT * FROM voc.craftsmen WHERE trip > ? LIMIT ?", list(3,15))
+RMonetQuery(con,  "SELECT * FROM voc.craftsmen WHERE trip > ? LIMIT ?", list(3,15))
 }}
 
 \author{
   Piers Harding
 }
 \seealso{
-  \code{\link{RMonetDB}}, \code{\link{RMonetDBConnect}}, \code{\link{RMonetDBGetInfo}}, \code{\link{RMonetDBQuery}}, \code{\link{RMonetDBLoadDataFrame}}, \code{\link{RMonetDBExecute}}, \code{\link{RMonetDBClose}}, \code{\link{RMonetDBStartTransaction}}, \code{\link{RMonetDBCommit}}, \code{\link{RMonetDBIsConnected}}, \code{\link{RMonetDBQuote}}, \code{\link{RMonetDBUnQuote}}, \code{\link{RMonetDBExists}}, \code{\link{RMonetDBListTables}}, \code{\link{RMonetDBListFields}}
+  \code{\link{RMonet}}, \code{\link{RMonetConnect}}, \code{\link{RMonetGetInfo}}, \code{\link{RMonetQuery}}, \code{\link{RMonetLoadDataFrame}}, \code{\link{RMonetExecute}}, \code{\link{RMonetClose}}, \code{\link{RMonetStartTransaction}}, \code{\link{RMonetCommit}}, \code{\link{RMonetIsConnected}}, \code{\link{RMonetQuote}}, \code{\link{RMonetUnQuote}}, \code{\link{RMonetExists}}, \code{\link{RMonetListTables}}, \code{\link{RMonetListFields}}
 }
 \keyword{IO}
 \keyword{SQL}

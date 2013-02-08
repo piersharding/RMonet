@@ -3,9 +3,9 @@
 #export MAPI_INCLUDE=/home/piers/code/sap/nwrfcsdk/include
 #export MAPI_LIBS=/home/piers/code/sap/nwrfcsdk/lib
 
-rm -rf /home/piers/R/x86_64-pc-linux-gnu-library/2.15/RMonetDB
-rm src/RMonetDB.o
-rm src/RMonetDB.so
+rm -rf /home/piers/R/x86_64-pc-linux-gnu-library/2.15/RMonet
+rm src/RMonet.o
+rm src/RMonet.so
 rm *.Rout
 rm configure
 

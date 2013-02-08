@@ -3,11 +3,11 @@
 R CMD INSTALL --preclean .
 R CMD INSTALL --clean .
 
-rm src/RMonetDB.i*
-rm src/RMonetDB.o
-rm src/RMonetDB.so
+rm src/RMonet.i*
+rm src/RMonet.o
+rm src/RMonet.so
 rm rfc*.trc
 rm *.Rout
-rm RMonetDB_*.tar.gz
+rm RMonet_*.tar.gz
 rm -rf autom4te.cache
 

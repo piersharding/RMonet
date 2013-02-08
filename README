@@ -1,12 +1,14 @@
 
-RMonetDB - An R interface to the MonetDB in-memory column store
+RMonet - An R interface to the MonetDB in-memory column store
 ---------------------------------------------------------------
 
 Copyright (C) Piers Harding 2012 - and beyond, All rights reserved
 
-== Summary
+== Summary ==
 
-Welcome to the RMonetDB R module.  This module is intended to facilitate SQL calls to the MonetDB database using the MAPI client library interface (http://www.monetdb.org/Documentation/Manuals/SQLreference/Programming/MAPI), and doing native conversions between column and data.frame types.
+Welcome to the RMonet R module.  This module is intended to facilitate SQL calls to the MonetDB database using the MAPI client library interface (http://www.monetdb.org/Documentation/Manuals/SQLreference/Programming/MAPI), and doing native conversions between column and data.frame types.
+
+RMonet was formally named RMonetDB, but this has a namespace clash with two other R packages that appeared on the scene at the same time: RMonetDB.R https://r-forge.r-project.org/R/?group_id=1534 ODBC based, and RMonetDB https://r-forge.r-project.org/scm/viewvc.php/pkg/RMonetDB/?root=sqlsurvey Java based.
 
 Prerequisites:
 Please insure that YAML is installed:
@@ -19,7 +21,7 @@ Examples:
 See the files in the tests/ directory.
 
 Documentation:
-help(RMonetDB)
+help(RMonet)
 
 Test suite:
 To run the test suite you must load the test 'voc' data base available at http://www.monetdb.org/Documentation/Tutorial
@@ -51,7 +53,7 @@ rm run_tests.Rout; R CMD BATCH run_tests.R; more run_tests.Rout
 Bugs:
 I appreciate bug reports and patches, just mail me! piers@ompka.net
 
-RMonetDB is Copyright (c) 2012 - and beyond Piers Harding.
+RMonet is Copyright (c) 2012 - and beyond Piers Harding.
 It is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
 License as published by the Free Software Foundation; either

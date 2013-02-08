@@ -1,12 +1,12 @@
-\name{RMonetDBLoadDataFrame}
-\alias{RMonetDBLoadDataFrame}
+\name{RMonetLoadDataFrame}
+\alias{RMonetLoadDataFrame}
 \alias{dbwrite}
 \title{Load a data.frame into a MonetDB table}
 \description{
   Load a data.frame object into a MonetDB table with automatic schema detection
 }
 \usage{
-RMonetDBLoadDataFrame(con, frame, tablename, drop=FALSE, chunk=500000, tmp.file = FALSE, append = FALSE)
+RMonetLoadDataFrame(con, frame, tablename, drop=FALSE, chunk=500000, tmp.file = FALSE, append = FALSE)
 }%"
 \arguments{
   \item{con}{an Open MonetDB Connection handle}
@@ -19,10 +19,10 @@ RMonetDBLoadDataFrame(con, frame, tablename, drop=FALSE, chunk=500000, tmp.file 
 }
 \details{
 
-  con <- RMonetDBConnect("db.yml")
-  res <- RMonetDBLoadDataFrame(con, craftsmen, "tmp_craftsmen")
+  con <- RMonetConnect("db.yml")
+  res <- RMonetLoadDataFrame(con, craftsmen, "tmp_craftsmen")
   print(res)
-  RMonetDBClose(con)
+  RMonetClose(con)
 
 }
 
@@ -36,14 +36,14 @@ RMonetDBLoadDataFrame(con, frame, tablename, drop=FALSE, chunk=500000, tmp.file 
 
 \examples{\dontrun{
 # Close the connection
-RMonetDBLoadDataFrame(con, my.frame, "tmp_tab", drop=TRUE)
+RMonetLoadDataFrame(con, my.frame, "tmp_tab", drop=TRUE)
 }}
 
 \author{
   Piers Harding
 }
 \seealso{
-  \code{\link{RMonetDB}}, \code{\link{RMonetDBConnect}}, \code{\link{RMonetDBGetInfo}}, \code{\link{RMonetDBQuery}}, \code{\link{RMonetDBLoadDataFrame}}, \code{\link{RMonetDBExecute}}, \code{\link{RMonetDBClose}}, \code{\link{RMonetDBStartTransaction}}, \code{\link{RMonetDBCommit}}, \code{\link{RMonetDBIsConnected}}, \code{\link{RMonetDBQuote}}, \code{\link{RMonetDBUnQuote}}, \code{\link{RMonetDBExists}}, \code{\link{RMonetDBListTables}}, \code{\link{RMonetDBListFields}}
+  \code{\link{RMonet}}, \code{\link{RMonetConnect}}, \code{\link{RMonetGetInfo}}, \code{\link{RMonetQuery}}, \code{\link{RMonetLoadDataFrame}}, \code{\link{RMonetExecute}}, \code{\link{RMonetClose}}, \code{\link{RMonetStartTransaction}}, \code{\link{RMonetCommit}}, \code{\link{RMonetIsConnected}}, \code{\link{RMonetQuote}}, \code{\link{RMonetUnQuote}}, \code{\link{RMonetExists}}, \code{\link{RMonetListTables}}, \code{\link{RMonetListFields}}
 }
 \keyword{IO}
 \keyword{SQL}

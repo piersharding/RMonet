@@ -1,6 +1,6 @@
 
 library(RUnit)
-library(RMonetDB)
+library(RMonet)
  
 test.suite <- defineTestSuite("example",
                               dirs = file.path("tests"),

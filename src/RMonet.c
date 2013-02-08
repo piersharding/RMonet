@@ -4,7 +4,7 @@
  *
  *         */
 
-/* RMonetDB low level interface
+/* RMonet low level interface
  *
  */
 //#include <config.h>
@@ -58,13 +58,13 @@ typedef enum { false, true } mybool;
 #endif
 
 
-typedef struct RMonetDB_CONN_INFO_rec {
+typedef struct RMonet_CONN_INFO_rec {
     Mapi handle;
-} RMonetDB_CONN_INFO, *pRMonetDB_CONN_INFO;
+} RMonet_CONN_INFO, *pRMonet_CONN_INFO;
 
 
 static unsigned int nHandles = 0; /* number of Handles opened in session */
-static pRMonetDB_CONN_INFO opened_handles[MAX_HANDLES+1];
+static pRMonet_CONN_INFO opened_handles[MAX_HANDLES+1];
 
 
 static char * query_parameters[MAX_PARAMS+1];
@@ -131,7 +131,7 @@ SEXP mk_string(char * str) {
 }
 
 
-void rmonetdb_errorcall(Mapi dbh, MapiHdl hdl, char * msg)
+void rmonet_errorcall(Mapi dbh, MapiHdl hdl, char * msg)
 {
     if (hdl != NULL) {
         mapi_explain_query(hdl, stderr);
@@ -154,7 +154,7 @@ void rmonetdb_errorcall(Mapi dbh, MapiHdl hdl, char * msg)
 }
 
 
-SEXP RMonetDBConnect(SEXP args)
+SEXP RMonetConnect(SEXP args)
 {
     SEXP names;
     SEXP ptr;
@@ -164,7 +164,7 @@ SEXP RMonetDBConnect(SEXP args)
 
     MapiHdl hdl = NULL;
 
-    RMonetDB_CONN_INFO *hptr;
+    RMonet_CONN_INFO *hptr;
     int idx, i;
     const char * dbhost = NULL;
     int dbport = 50000;
@@ -174,7 +174,7 @@ SEXP RMonetDBConnect(SEXP args)
     const char * dbname = NULL;
     const char * csepk = NULL, * csepv = NULL;
 
-    hptr = malloc(sizeof(RMonetDB_CONN_INFO));
+    hptr = malloc(sizeof(RMonet_CONN_INFO));
     hptr->handle = NULL;
     idx = length(args);
     names = args;
@@ -218,17 +218,17 @@ SEXP RMonetDBConnect(SEXP args)
     dblang = NULL;
     dbname = NULL;
     if (mapi_error(hptr->handle)) {
-        rmonetdb_errorcall(hptr->handle, hdl, "MonetDB connection open failed");
+        rmonet_errorcall(hptr->handle, hdl, "MonetDB connection open failed");
         return(R_NilValue);
     }
 
     PROTECT(ans = allocVector(INTSXP, 1));
     INTEGER(ans)[0] = nHandles;
-    PROTECT(ptr = R_MakeExternalPtr(hptr, install("RMonetDB_handle"), R_NilValue));
+    PROTECT(ptr = R_MakeExternalPtr(hptr, install("RMonet_handle"), R_NilValue));
     setAttrib(ans, install("handle_ptr"), ptr);
     if(nHandles <= MAX_HANDLES) opened_handles[nHandles] = hptr;
     PROTECT(df_class_name = NEW_CHARACTER((Sint) 1));
-    SET_CHR_EL(df_class_name, 0, COPY_TO_USER_STRING("RMonetDB_Connector"));
+    SET_CHR_EL(df_class_name, 0, COPY_TO_USER_STRING("RMonet_Connector"));
     SET_CLASS_NAME(ans, df_class_name);
     UNPROTECT(3);
     return ans;
@@ -240,12 +240,12 @@ SEXP RMonetDBConnect(SEXP args)
  *        DISCONNECT
  *
  * **********************************************/
-SEXP RMonetDBIsConnected(SEXP handle)
+SEXP RMonetIsConnected(SEXP handle)
 {
     SEXP ans;
     PROTECT(ans = NEW_LOGICAL((Sint) 1));
     SEXP ptr = getAttrib(handle, install("handle_ptr"));
-    RMonetDB_CONN_INFO *hptr = R_ExternalPtrAddr(ptr);
+    RMonet_CONN_INFO *hptr = R_ExternalPtrAddr(ptr);
     if (mapi_is_connected(hptr->handle) != 0 && mapi_ping(hptr->handle) == MOK) {
         LGL_EL(ans, 0) = (Sint) true;
         //return ScalarInteger(1);
@@ -258,18 +258,18 @@ SEXP RMonetDBIsConnected(SEXP handle)
 }
 
 
-SEXP RMonetDBExecute(SEXP handle, SEXP sql, SEXP autocommit, SEXP lastid, SEXP try)
+SEXP RMonetExecute(SEXP handle, SEXP sql, SEXP autocommit, SEXP lastid, SEXP try)
 {
     MapiHdl hdl = NULL;
     SEXP ans;
 
     SEXP exptr = getAttrib(handle, install("handle_ptr"));
-    RMonetDB_CONN_INFO *hptr = R_ExternalPtrAddr(exptr);
+    RMonet_CONN_INFO *hptr = R_ExternalPtrAddr(exptr);
 
     // if auto commit - set commit on the handle
     if (!isLogical(autocommit) || LOGICAL(autocommit)[0] == TRUE) {
         if (mapi_setAutocommit(hptr->handle, 1) != MOK || mapi_error(hptr->handle)) {
-            rmonetdb_errorcall(hptr->handle, hdl, "MonetDB failed to enable autocommit");
+            rmonet_errorcall(hptr->handle, hdl, "MonetDB failed to enable autocommit");
             PROTECT(ans = NEW_LOGICAL((Sint) 1));
             LGL_EL(ans, 0) = (Sint) false;
             UNPROTECT(1);
@@ -281,7 +281,7 @@ SEXP RMonetDBExecute(SEXP handle, SEXP sql, SEXP autocommit, SEXP lastid, SEXP t
     // else ensure that no auto commit
     else {
         if (mapi_setAutocommit(hptr->handle, 0) != MOK || mapi_error(hptr->handle)) {
-            rmonetdb_errorcall(hptr->handle, hdl, "MonetDB failed to disable autocommit");
+            rmonet_errorcall(hptr->handle, hdl, "MonetDB failed to disable autocommit");
             PROTECT(ans = NEW_LOGICAL((Sint) 1));
             LGL_EL(ans, 0) = (Sint) false;
             UNPROTECT(1);
@@ -304,7 +304,7 @@ SEXP RMonetDBExecute(SEXP handle, SEXP sql, SEXP autocommit, SEXP lastid, SEXP t
                 return(ans);
                 //return ScalarInteger(0);
             }
-            rmonetdb_errorcall(hptr->handle, hdl, "MonetDB query execute failed");
+            rmonet_errorcall(hptr->handle, hdl, "MonetDB query execute failed");
             PROTECT(ans = NEW_LOGICAL((Sint) 1));
             LGL_EL(ans, 0) = (Sint) false;
             UNPROTECT(1);
@@ -340,14 +340,14 @@ SEXP RMonetDBExecute(SEXP handle, SEXP sql, SEXP autocommit, SEXP lastid, SEXP t
 }
 
 
-SEXP RMonetDBClose(SEXP handle)
+SEXP RMonetClose(SEXP handle)
 {
     SEXP ans;
 
     //fprintf(stderr, "before get attr\n");
     SEXP exptr = getAttrib(handle, install("handle_ptr"));
     //fprintf(stderr, "after get attr\n");
-    RMonetDB_CONN_INFO *hptr = R_ExternalPtrAddr(exptr);
+    RMonet_CONN_INFO *hptr = R_ExternalPtrAddr(exptr);
 //    Rprintf("(CLose)got handle %p\n", hptr);
 
     // always returns MOK
@@ -370,10 +370,10 @@ SEXP RMonetDBClose(SEXP handle)
 }
 
 
-SEXP RMonetDBGetInfo(SEXP handle)
+SEXP RMonetGetInfo(SEXP handle)
 {
     SEXP exptr = getAttrib(handle, install("handle_ptr"));
-    RMonetDB_CONN_INFO *hptr = R_ExternalPtrAddr(exptr);
+    RMonet_CONN_INFO *hptr = R_ExternalPtrAddr(exptr);
 
     SEXP ans, ansnames;
     int i=0;
@@ -402,7 +402,7 @@ SEXP RMonetDBGetInfo(SEXP handle)
 }
 
 
-SEXP RMonetDBQuote(SEXP str)
+SEXP RMonetQuote(SEXP str)
 {
     SEXP ans;
     //fprintf(stderr, "Quote: %s\n", CHAR(STRING_ELT(str, 0)));
@@ -413,7 +413,7 @@ SEXP RMonetDBQuote(SEXP str)
 }
 
 
-SEXP RMonetDBUnQuote(SEXP str)
+SEXP RMonetUnQuote(SEXP str)
 {
     SEXP ans;
     //fprintf(stderr, "UnQuote: %s\n", CHAR(STRING_ELT(str, 0)));
@@ -424,10 +424,10 @@ SEXP RMonetDBUnQuote(SEXP str)
 }
 
 
-SEXP RMonetDBQuery(SEXP handle, SEXP sql, SEXP parameters, SEXP autocommit, SEXP lastid, SEXP page)
+SEXP RMonetQuery(SEXP handle, SEXP sql, SEXP parameters, SEXP autocommit, SEXP lastid, SEXP page)
 {
     SEXP exptr = getAttrib(handle, install("handle_ptr"));
-    RMonetDB_CONN_INFO *hptr = R_ExternalPtrAddr(exptr);
+    RMonet_CONN_INFO *hptr = R_ExternalPtrAddr(exptr);
     //Rprintf("got handle %p\n", hptr);
 
     SEXP ans, ansnames, names, name, value;
@@ -449,7 +449,7 @@ SEXP RMonetDBQuery(SEXP handle, SEXP sql, SEXP parameters, SEXP autocommit, SEXP
 
     if (!isLogical(autocommit) || LOGICAL(autocommit)[0] == FALSE) {
         if (mapi_setAutocommit(hptr->handle, 0) != MOK || mapi_error(hptr->handle)) {
-            rmonetdb_errorcall(hptr->handle, hdl, "MonetDB failed to disable autocommit");
+            rmonet_errorcall(hptr->handle, hdl, "MonetDB failed to disable autocommit");
             PROTECT(ans = NEW_LOGICAL((Sint) 1));
             LGL_EL(ans, 0) = (Sint) false;
             UNPROTECT(1);
@@ -460,7 +460,7 @@ SEXP RMonetDBQuery(SEXP handle, SEXP sql, SEXP parameters, SEXP autocommit, SEXP
     }
     else {
         if (mapi_setAutocommit(hptr->handle, 1) != MOK || mapi_error(hptr->handle)) {
-            rmonetdb_errorcall(hptr->handle, hdl, "MonetDB failed to enable autocommit");
+            rmonet_errorcall(hptr->handle, hdl, "MonetDB failed to enable autocommit");
             PROTECT(ans = NEW_LOGICAL((Sint) 1));
             LGL_EL(ans, 0) = (Sint) false;
             UNPROTECT(1);
@@ -476,7 +476,7 @@ SEXP RMonetDBQuery(SEXP handle, SEXP sql, SEXP parameters, SEXP autocommit, SEXP
     if (idx <= 0) {
         // no parameters - straight query
         if ((hdl = mapi_query(hptr->handle, CHAR(STRING_ELT(sql,0)))) == NULL || mapi_error(hptr->handle)) {
-            rmonetdb_errorcall(hptr->handle, hdl, "MonetDB query failed");
+            rmonet_errorcall(hptr->handle, hdl, "MonetDB query failed");
             PROTECT(ans = NEW_LOGICAL((Sint) 1));
             LGL_EL(ans, 0) = (Sint) false;
             UNPROTECT(1);
@@ -504,7 +504,7 @@ SEXP RMonetDBQuery(SEXP handle, SEXP sql, SEXP parameters, SEXP autocommit, SEXP
             for (i=0; i<=MAX_PARAMS; i++) {
                 query_parameters[i] = NULL;
             }
-            rmonetdb_errorcall(hptr->handle, hdl, "MonetDB parameterised query failed");
+            rmonet_errorcall(hptr->handle, hdl, "MonetDB parameterised query failed");
             PROTECT(ans = NEW_LOGICAL((Sint) 1));
             LGL_EL(ans, 0) = (Sint) false;
             UNPROTECT(1);
@@ -636,13 +636,13 @@ SEXP RMonetDBQuery(SEXP handle, SEXP sql, SEXP parameters, SEXP autocommit, SEXP
 
     // check errors on retrieving results
     if (mapi_error(hptr->handle)) {
-        rmonetdb_errorcall(hptr->handle, hdl, "MonetDB query retrieve results failed");
+        rmonet_errorcall(hptr->handle, hdl, "MonetDB query retrieve results failed");
         // return(R_NilValue);
     }
 
     // check errors on closing the query statement handle
     if (mapi_close_handle(hdl) != MOK) {
-        rmonetdb_errorcall(hptr->handle, hdl, "MonetDB query close statement handle failed");
+        rmonet_errorcall(hptr->handle, hdl, "MonetDB query close statement handle failed");
         // return(R_NilValue);
     }
     return ans;
@@ -650,27 +650,27 @@ SEXP RMonetDBQuery(SEXP handle, SEXP sql, SEXP parameters, SEXP autocommit, SEXP
 
 
 /* called from .onUnload */
-SEXP RMonetDBTerm(void)
+SEXP RMonetTerm(void)
 {
     return R_NilValue;
 }
 
 
 static const R_CallMethodDef CallEntries[] = {
-    {"RMonetDBConnect", (DL_FUNC) &RMonetDBConnect, 1},
-    {"RMonetDBIsConnected", (DL_FUNC) &RMonetDBIsConnected, 1},
-    {"RMonetDBQuery", (DL_FUNC) &RMonetDBQuery, 6},
-    {"RMonetDBExecute", (DL_FUNC) &RMonetDBExecute, 5},
-    {"RMonetDBClose", (DL_FUNC) &RMonetDBClose, 1},
-    {"RMonetDBGetInfo", (DL_FUNC) &RMonetDBGetInfo, 1},
-    {"RMonetDBQuote", (DL_FUNC) &RMonetDBQuote, 1},
-    {"RMonetDBUnQuote", (DL_FUNC) &RMonetDBUnQuote, 1},
-//    {"RMonetDBTerm", (DL_FUNC) &RMonetDBTerm, 0},
+    {"RMonetConnect", (DL_FUNC) &RMonetConnect, 1},
+    {"RMonetIsConnected", (DL_FUNC) &RMonetIsConnected, 1},
+    {"RMonetQuery", (DL_FUNC) &RMonetQuery, 6},
+    {"RMonetExecute", (DL_FUNC) &RMonetExecute, 5},
+    {"RMonetClose", (DL_FUNC) &RMonetClose, 1},
+    {"RMonetGetInfo", (DL_FUNC) &RMonetGetInfo, 1},
+    {"RMonetQuote", (DL_FUNC) &RMonetQuote, 1},
+    {"RMonetUnQuote", (DL_FUNC) &RMonetUnQuote, 1},
+//    {"RMonetTerm", (DL_FUNC) &RMonetTerm, 0},
     {NULL, NULL, 0}
 };
 
 
-void R_init_RMonetDB(DllInfo *dll)
+void R_init_RMonet(DllInfo *dll)
 {
     R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
     R_useDynamicSymbols(dll, FALSE);

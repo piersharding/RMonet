@@ -1,7 +1,7 @@
-HowTo install RMonetDB
+HowTo install RMonet
 ======================
 
-The easiest way to install RMonetDB is to clone the repository and use
+The easiest way to install RMonet is to clone the repository and use
 R CMD INSTALL
 
 Dependencies:
@@ -24,7 +24,7 @@ From R:
 
 install.packages('devtools')
 library(devtools)
-install_github('RMonetDB', username='piersharding', args=c("--configure-args='--with-mapi-include=/usr/include/monetdb --with-mapi-lib=.'"))
+install_github('RMonet', username='piersharding', args=c("--configure-args='--with-mapi-include=/usr/include/monetdb --with-mapi-lib=.'"))
 
 The args= value passed in must correspond to the correct location for your setup for the INCLUDE and LIB paths to the MonetDB mapi client library.
 
@@ -44,10 +44,10 @@ export MAPI_LIBS=.
 
 Download the package from GitHub -
 either:
-git clone git@github.com:piersharding/RSAP.git
+git clone git@github.com:piersharding/RMonet.git
 
 or:
-retrieve and unpack https://github.com/piersharding/RSAP/archive/master.zip
+retrieve and unpack https://github.com/piersharding/RMonet/archive/master.zip
 
 Then run the build and install command from the package root
 directory:
