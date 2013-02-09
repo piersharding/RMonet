@@ -19,6 +19,13 @@ sudo apt-get install libmonetdb-stream-dev libmonetdb-client-dev
 
 First Option:
 
+From my own repository - in R:
+
+install.packages('RMonet', repos=c('http://piersharding.com/R'))
+
+
+Second Option:
+
 Using devtools, you can directly install the package from GitHub.
 From R:
 
@@ -36,8 +43,7 @@ up to date.  The easiest way to do this is to start R and:
 update.packages()
 
 
-
-Second Option:
+Third Option:
 
 Set the environment variables that locate the INCLUDE and LIB
 directories (change these to your own):
