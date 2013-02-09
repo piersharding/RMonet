@@ -38,6 +38,7 @@ sudo -u monetdb monetdb start voc
 sudo -u monetdb monetdb release voc
 sudo -u monetdb monetdb status
 
+Download the voc test data from https://github.com/piersharding/RMonet/blob/master/voc-export-all.csv.gz
 gunzip -c ./voc-export-all.csv.gz | mclient -u monetdb -d voc
 
 The default password for the user 'monetdb' is 'monetdb'

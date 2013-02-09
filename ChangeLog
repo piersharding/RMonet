@@ -9,3 +9,7 @@ Version: 0.2 (2013-01-31, released)
 Version: 0.3 (2013-02-05, released)
 
 	* Fix build process 
+
+Version: 0.4 (2013-02-10, released)
+
+	* Remove custom make references

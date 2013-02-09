@@ -1,6 +1,6 @@
 Package: RMonet
-Version: 0.3
-Date: 2013-01-31
+Version: 0.4
+Date: 2013-02-10
 Author: Piers Harding <piers@ompka.net>
 Maintainer: Piers Harding <piers@ompka.net>
 Title: MonetDB SQL client interface for R
@@ -13,4 +13,4 @@ URL: http://github.com/piersharding/RMonet
 BugReports: http://github.com/piersharding/RMonet/issues
 BuildVignettes: no
 Repository: CRAN
-Date/Publication: 2012-02-04 12:00:00
+Date/Publication: 2012-02-10 12:00:00
