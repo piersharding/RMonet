@@ -30,7 +30,6 @@
     library.dynam.unload("RMonet", libpath)
 }
 
-
 RMonetConnect <- function (...)
 {
     args <- list(...)
@@ -385,4 +384,3 @@ if (!exists("dbexecute")) {
 #          },
 #          valueClass = "data.frame"
 #        )
-

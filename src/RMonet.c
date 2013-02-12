@@ -14,7 +14,6 @@
 #include <R_ext/PrtUtil.h>
 #include <R_ext/Rdynload.h>
 
-
 #define LST_EL(x,i) VECTOR_ELT((x),(i))
 #define CHR_EL(x,i) CHAR_DEREF(STRING_ELT((x),(i)))
 #define SET_CHR_EL(x,i,val)  SET_STRING_ELT((x),(i), (val))
