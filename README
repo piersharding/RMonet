@@ -8,7 +8,7 @@ Copyright (C) Piers Harding 2012 - and beyond, All rights reserved
 
 Welcome to the RMonet R module.  This module is intended to facilitate SQL calls to the MonetDB database using the MAPI client library interface (http://www.monetdb.org/Documentation/Manuals/SQLreference/Programming/MAPI), and doing native conversions between column and data.frame types.
 
-RMonet was formally named RMonetDB, but this has a namespace clash with two other R packages that appeared on the scene at the same time: RMonetDB.R https://r-forge.r-project.org/R/?group_id=1534 ODBC based, and RMonetDB https://r-forge.r-project.org/scm/viewvc.php/pkg/RMonetDB/?root=sqlsurvey Java based.
+RMonet was formally named RMonetDB, but this has a namespace clash with two other R packages that appeared on the scene at the same time: MonetDB.R https://r-forge.r-project.org/R/?group_id=1534 native R based, and RMonetDB https://r-forge.r-project.org/scm/viewvc.php/pkg/RMonetDB/?root=sqlsurvey Java based.
 
 Prerequisites:
 Please insure that YAML is installed:
